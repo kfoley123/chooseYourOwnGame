@@ -1,0 +1,67 @@
+/*
+Theme Name: RetroGame
+Description: A retro-themed game page with a black background and green text.
+Author: Your Name
+Version: 1.0
+*/
+
+body {
+    background-color: black;
+    color: limegreen; /* Green text */
+    font-family: 'Courier New', Courier, monospace; /* Retro font */
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2em;
+}
+
+.terminal-game {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid limegreen;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+textarea {
+    width: 100%;
+    background-color: black;
+    color: limegreen;
+    border: 1px solid limegreen;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace; /* Retro font */
+}
+
+input[type="text"] {
+    width: 100%;
+    background-color: black;
+    color: limegreen;
+    border: 1px solid limegreen;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace; /* Retro font */
+}
+
+.playerInput {
+    height: 50px;
+}
+
+input[type="submit"] {
+    background-color: limegreen;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace; /* Retro font */
+    font-size: 1em;
+    
+}
+
+input[type="submit"]:hover {
+    background-color: darkgreen;
+}
