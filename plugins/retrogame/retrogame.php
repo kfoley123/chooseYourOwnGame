@@ -17,9 +17,9 @@ function retrogame_display_game() {
     ob_start();  // Start output buffering
     ?>
     <div id="game">
-        <h1>Welcome to the Game!</h1>
-        <p>Beware the darkness that lies ahead...</p>
-        <p>You find yourself in a foggy forest at night. You come to a fork in the woods. Do you go left, right, or turn back?</p>
+        <div id="game-content">  
+           
+        </div>
         <input type="text" id="user-input" placeholder="Type your action here...">
         <button id="submit-action">Submit</button>
         <div id="game-output"></div>
@@ -27,4 +27,4 @@ function retrogame_display_game() {
     <?php
     return ob_get_clean();  // Return the buffered output
 }
-add_shortcode('retrogame', 'retrogame_display_game');  // Register the shortcode
+add_shortcode('retrogame', 'retrogame_display_game');
