@@ -6,6 +6,9 @@
  * Author: Kortney Foley
  */
 
+ // Include AJAX functions
+include_once(plugin_dir_path(__FILE__) . 'ajax-functions.php');
+
 // Enqueue JavaScript
 function retrogame_enqueue_scripts() {
     wp_enqueue_script('retrogame-js', plugins_url('/game.js', __FILE__), array('jquery'), null, true);
@@ -18,7 +21,6 @@ function retrogame_display_game() {
     ?>
     <div id="game">
         <div id="game-content">  
-           
         </div>
         <input type="text" id="user-input" placeholder="Type your action here...">
         <button id="submit-action">Submit</button>
