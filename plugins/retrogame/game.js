@@ -47,16 +47,21 @@ async function makeChoice(userInput) {
 
         const result = await response.json();
 
+        console.log(result); // Log the entire result to debug
+
         if (result.success) {
             gameStep = result.data.next_step; // Update to the next game step from server response
             loadGameStep(gameStep); // Load the new game step
         } else {
-            document.getElementById('game-output').innerHTML = 'Invalid command. Try again.';
+            console.log('Error message:', result.data); // Log the error data
+            document.getElementById('game-output').innerHTML = result.data.invalid_message; // Show specific invalid message
         }
     } catch (error) {
         console.error('Error processing choice:', error);
     }
 }
+
+
 
 // Event listener for the submit button
 document.getElementById('submit-action').addEventListener('click', () => {

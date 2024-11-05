@@ -62,7 +62,9 @@ function process_choice() {
     if ($next_step !== null) {
         wp_send_json_success(['next_step' => $next_step, 'is_game_over' => !$is_correct]);
     } else {
-        wp_send_json_error('Invalid choice.');
+        // Fetch the invalid_message for the current step
+        $invalid_message = isset($step['invalid_message']) ? $step['invalid_message'] : 'Invalid choice. Please try again.'; // Default message if not set
+        wp_send_json_error(['invalid_message' => $invalid_message]); // Send it as part of the error response
     }
 
     wp_die();
