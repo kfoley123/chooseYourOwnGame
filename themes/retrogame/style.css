@@ -5,9 +5,14 @@ Author: Your Name
 Version: 1.0
 */
 
+:root {
+    --main-color: limegreen;
+   
+}
+
 body {
     background-color: black;
-    color: limegreen; /* Green text */
+    color: var(--main-color);
     font-family: 'Courier New', Courier, monospace; /* Retro font */
     margin: 0;
     padding: 0;
@@ -22,7 +27,7 @@ h1 {
     width: 80%;
     margin: 20px auto;
     padding: 20px;
-    border: 2px solid limegreen;
+    border: 2px solid var(--main-color);
     border-radius: 5px;
     background-color: rgba(0, 0, 0, 0.7);
 }
@@ -30,8 +35,8 @@ h1 {
 textarea {
     width: 100%;
     background-color: black;
-    color: limegreen;
-    border: 1px solid limegreen;
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace; /* Retro font */
 }
@@ -39,8 +44,8 @@ textarea {
 input[type="text"] {
     width: 100%;
     background-color: black;
-    color: limegreen;
-    border: 1px solid limegreen;
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace; /* Retro font */
     height: 50px;
@@ -48,7 +53,7 @@ input[type="text"] {
 
 button,
 input[type="submit"] {
-    background-color: limegreen;
+    background-color: var(--main-color);
     color: black;
     border: none;
     border-radius: 5px;
@@ -83,7 +88,7 @@ footer::after {
 hr {
     border: none; 
     height: 1px;  
-    background-color: limegreen; 
+    background-color: var(--main-color); 
 }
 
 #game {
@@ -94,10 +99,10 @@ hr {
     min-height: 400px;
     margin: 0 auto;
     padding: 20px;
-    border: 3px solid limegreen;
+    border: 3px solid var(--main-color);
     border-radius: 15px;
     background-color: black;
-    color: limegreen;
+    color: var(--main-color);
     text-align: center;
 }
 
@@ -109,8 +114,8 @@ hr {
     width: 80%;
     padding: 10px;
     background-color: black;
-    color: limegreen;
-    border: 2px solid limegreen;
+    color: var(--main-color);
+    border: 2px solid var(--main-color);
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace;
     font-size: 1em;
@@ -118,7 +123,7 @@ hr {
 }
 
 #submit-action {
-    background-color: limegreen;
+    background-color: var(--main-color);
     color: black;
     border: none;
     border-radius: 5px;
@@ -132,6 +137,10 @@ hr {
 
 #game-output {
     margin-top: 20px;
-    color: limegreen;
+    color: var(--main-color);
     font-family: 'Courier New', Courier, monospace;
+}
+
+body.game-over {
+    --main-color: red;
 }

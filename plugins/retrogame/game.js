@@ -70,6 +70,7 @@ document.getElementById('submit-action').addEventListener('click', () => {
 function resetGame() {
     gameStep = 0;  // Reset the game step to the start
     gameOver = false; // Reset the game over flag
+    document.body.classList.remove('game-over'); // Remove 'game-over' class from body
     loadGameStep(gameStep);  // Load the initial step via AJAX
 
     // Show input and button again
@@ -81,6 +82,7 @@ function resetGame() {
 // Function to display the death screen
 function displayDeathScreen() {
     gameOver = true; // Set the game over flag
+    document.body.classList.add('game-over');
 
     // Clear previous content from game-content before displaying "Game Over"
     document.getElementById('game-content').innerHTML = '';
@@ -130,16 +132,16 @@ function displayDeathScreen() {
 
 
     document.getElementById('game-content').innerHTML = deathScreen;
-
-    // Hide input and button during "Game Over" screen
-    document.getElementById('user-input').style.display = 'none';
-    document.getElementById('submit-action').style.display = 'none';
-
-    // Delay resetting the game by 3 seconds (3000 milliseconds)
-    setTimeout(() => {
-        resetGame(); // Restart the game after the delay
-    }, 3000);
-}
+       // Hide input and button during "Game Over" screen
+       document.getElementById('user-input').style.display = 'none';
+       document.getElementById('submit-action').style.display = 'none';
+   
+       // Delay resetting the game by 3 seconds (3000 milliseconds)
+       setTimeout(resetGame, 3000);
+   }
+   
 
 // Initial game setup
-resetGame();
+document.addEventListener('DOMContentLoaded', () => {
+    resetGame(); // Start game
+});
