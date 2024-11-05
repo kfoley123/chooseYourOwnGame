@@ -10,6 +10,16 @@ Version: 1.0
    
 }
 
+header {
+    display: flex; 
+    justify-content: center;
+}
+
+header pre{
+    font-family: monospace;
+     color: var(--main-color);
+}
+
 body {
     background-color: black;
     color: var(--main-color);
