@@ -1,5 +1,70 @@
-let gameStep = 0;  // Variable to track game progress
+let gameStep = 0; // Initialize the starting step
 let gameOver = false;
+
+// Function to load the game step
+async function loadGameStep(stepNumber = 0) {
+    try {
+        const response = await fetch('/wp-admin/admin-ajax.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `action=get_story_step&step_number=${stepNumber}`
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            const data = result.data;
+
+            // Display the game text
+            document.getElementById('game-content').innerHTML = `<p>${data.text}</p>`;
+
+            // Handle game-over state if specified by the backend
+            if (data.is_game_over) {
+                displayDeathScreen();  // Show the death screen if the step is a game-over
+                
+            }
+        } else {
+            console.error('Failed to load game step:', result.message);
+        }
+    } catch (error) {
+        console.error('Error loading game step:', error);
+    }
+}
+
+// Call the function to load the first step when the game starts
+document.addEventListener('DOMContentLoaded', () => {
+    loadGameStep(); // Load the first step (step 0)
+});
+
+// Function to handle the user's choice
+async function makeChoice(userInput) {
+    try {
+        const response = await fetch('/wp-admin/admin-ajax.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `action=process_choice&user_input=${encodeURIComponent(userInput)}&current_step=${gameStep}`
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            gameStep = result.data.next_step; // Update to the next game step from server response
+            loadGameStep(gameStep); // Load the new game step
+        } else {
+            document.getElementById('game-output').innerHTML = 'Invalid command. Try again.';
+        }
+    } catch (error) {
+        console.error('Error processing choice:', error);
+    }
+}
+
+// Event listener for the submit button
+document.getElementById('submit-action').addEventListener('click', () => {
+    const userInput = document.getElementById('user-input').value;
+    makeChoice(userInput);
+    document.getElementById('user-input').value = ''; // Clear input field after submission
+});
+
 
 // Function to reset the game
 function resetGame() {
@@ -12,73 +77,22 @@ function resetGame() {
     document.getElementById('submit-action').style.display = 'block';
 }
 
-// Function to update the game content
-async function loadGameStep(stepNumber) {
-    if (gameOver) return; // Prevent loading new steps if the game is over
-    console.log(`Loading game step: ${stepNumber}`); // Check the current step
-    try {
-        const response = await fetch('/wp-admin/admin-ajax.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `action=get_story_step&step_number=${stepNumber}`
-        });
-
-        console.log('Response status:', response.status); // Log response status
-        const result = await response.json();
-        console.log('AJAX response:', result); // Log the entire result
-
-        if (result.success) {
-            console.log('Game step loaded:', result.data); // Log the loaded step
-            const data = result.data;
-
-            // Ensure that data.text is defined
-            if (data && data.text) {
-                // Display the story text
-                document.getElementById('game-content').innerHTML = `<p>${data.text}</p>`;
-            } else {
-                console.error('No text found for this step:', data);
-            }
-
-            // Create buttons for options and display them
-            const optionsHTML = data.options.map(option => 
-                `<button onclick="makeChoice(${option.next_step})">${option.user_input}</button>`
-            ).join('');
-
-            document.getElementById('game-output').innerHTML = optionsHTML;
-
-            // Check if the current step is a game-over step
-            if (data.is_game_over) {
-                console.log("Game Over condition met");
-                displayDeathScreen();  // Show the death screen if the step is a game-over
-            }
-        } else {
-            console.error('Failed to load game step:', result.message);
-        }
-    } catch (error) {
-        console.error('Error loading game step:', error);
-    }
-}
-
-// Function to handle player's choice
-function makeChoice(nextStep) {
-    if (!gameOver) {
-        gameStep = nextStep; // Update the game step based on the player's choice
-        loadGameStep(gameStep); // Load the new game step
-    }
-}
 
 // Function to display the death screen
 function displayDeathScreen() {
     gameOver = true; // Set the game over flag
-    console.log("death screen is working");
+
+    // Clear previous content from game-content before displaying "Game Over"
+    document.getElementById('game-content').innerHTML = '';
+
     const deathScreen = `
-    <pre style="font-family: monospace; color: limegreen;">
-                                           .""--.._
-                                           []      \`'--.._
-                                           ||__           \`'-,
-                                         \`)||_ \`\`\`'--..         \\
-                     _                    /|//}              \`\`--._  |
-                  .' \` \`'              /////}                   \`\\/
+    <pre>
+                                                .""--.._
+                                                []      \`'--.._
+                                                ||__           \`'-,
+                                              \`)||_ \`\`\`'--..         \\
+                               _                    /|//}              \`\`--._  |
+                               .' \` \`'              /////}                   \`\\/
                  /  .""".\\              //{///    
                 /  /_  _\`\\            // \`||
                 | |(_)(_)||          _//   ||
@@ -114,40 +128,18 @@ function displayDeathScreen() {
         Game Over!
         </pre>`;
 
+
     document.getElementById('game-content').innerHTML = deathScreen;
 
     // Hide input and button during "Game Over" screen
     document.getElementById('user-input').style.display = 'none';
     document.getElementById('submit-action').style.display = 'none';
 
-    setTimeout(resetGame, 3000);  // Restart the game after 3 seconds
+    // Delay resetting the game by 3 seconds (3000 milliseconds)
+    setTimeout(() => {
+        resetGame(); // Restart the game after the delay
+    }, 3000);
 }
 
 // Initial game setup
 resetGame();
-
-// Set up event listener for user input
-document.getElementById('submit-action').addEventListener('click', function() {
-    if (gameOver) return; // Prevent any action if the game is over
-    const userInput = document.getElementById('user-input').value.toLowerCase();
-    const output = document.getElementById('game-output');
-
-    // Clear previous messages and input field on each click
-    output.innerHTML = '';
-    document.getElementById('user-input').value = '';  // Clear the input field
-
-    // Instead of managing steps directly, let AJAX handle it
-    if (gameStep === 0) {
-        if (userInput === 'yes') {
-            gameStep++;  // Move to the next game step
-            loadGameStep(gameStep);
-        } else if (userInput === 'no') {
-            output.innerHTML = 'Maybe next time... Game Over.';
-            document.getElementById('user-input').style.display = 'none';
-            document.getElementById('submit-action').style.display = 'none';
-            setTimeout(resetGame, 3000);  // Restart the game after 3 seconds
-        } else {
-            output.innerHTML = 'You must be certain! You must say "yes" or "no".';
-        }
-    }
-});
