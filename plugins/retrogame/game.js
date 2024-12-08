@@ -36,8 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
     loadGameStep(); // Load the first step (step 0)
 });
 
+
 // Function to handle the user's choice
 async function makeChoice(userInput) {
+    const gameOutputElement = document.getElementById('game-output');
+
+    // Explicitly clear any existing messages or output at the start
+    gameOutputElement.innerHTML = '';
+
     try {
         const response = await fetch('/wp-admin/admin-ajax.php', {
             method: 'POST',
@@ -47,20 +53,28 @@ async function makeChoice(userInput) {
 
         const result = await response.json();
 
-        console.log(result); // Log the entire result to debug
-
         if (result.success) {
-            gameStep = result.data.next_step; // Update to the next game step from server response
-            loadGameStep(gameStep); // Load the new game step
+            // Clear any lingering messages explicitly
+            gameOutputElement.innerHTML = '';
+
+            // Update the game step and load the new step
+            gameStep = result.data.next_step;
+            loadGameStep(gameStep);
         } else {
-            console.log('Error message:', result.data); // Log the error data
-            document.getElementById('game-output').innerHTML = result.data.invalid_message; // Show specific invalid message
+            // Display the specific invalid message
+            if (result.data && result.data.invalid_message) {
+                gameOutputElement.innerHTML = result.data.invalid_message;
+            } else {
+                gameOutputElement.innerHTML = 'Invalid input. Please try again.';
+            }
         }
     } catch (error) {
         console.error('Error processing choice:', error);
+
+        // Optionally display a generic error message
+        gameOutputElement.innerHTML = 'An unexpected error occurred. Please try again.';
     }
 }
-
 
 
 // Event listener for the submit button
