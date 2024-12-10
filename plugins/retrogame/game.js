@@ -45,6 +45,32 @@ document.addEventListener('DOMContentLoaded', () => {
     loadGameStep(); // Load the first step (step 0)
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    resetGame(); // Start game
+
+    const userInput = document.getElementById('user-input');
+    const submitButton = document.getElementById('submit-action');
+
+    // Function to handle submission logic
+    const handleSubmission = () => {
+        const inputText = userInput.value.trim();
+        if (inputText) {
+            makeChoice(inputText);
+            userInput.value = ''; 
+        }
+    };
+
+    // Add click event listener to the submit button
+    submitButton.addEventListener('click', handleSubmission);
+
+    userInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+            handleSubmission(); 
+        }
+    });
+});
+
 
 // Function to handle the user's choice
 async function makeChoice(userInput) {
