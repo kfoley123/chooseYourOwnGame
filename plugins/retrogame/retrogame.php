@@ -22,6 +22,7 @@ function retrogame_display_game() {
     <div id="game">
         <div id="game-content">  
         </div>
+        <img id="story-image" src="" alt="Story Image" style="display: none; width: 100%; max-width: 400px; margin: 20px auto;" />
         <input type="text" id="user-input" placeholder="Type your action here...">
         <button id="submit-action">Submit</button>
         <div id="game-output"></div>

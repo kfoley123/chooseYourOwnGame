@@ -14,16 +14,23 @@ function get_story_step() {
         wp_die(); // Properly end the AJAX request
     }
 
+    // Build the image URL dynamically based on your image folder location
+    $image_path = !empty($step['image_path']) ? esc_url(plugin_dir_url(__FILE__) . 'images/' . $step['image_path']) : null;
+
+
     // Prepare the response
     $response = [
         'text' => $step['text'],
         'is_game_over' => !empty($step['is_game_over']) && $step['is_game_over'] == 1,
-        'options' => json_decode($step['options'], true) // Decode the JSON options
+        'options' => json_decode($step['options'], true), // Decode the JSON options
+        'image' => $image_path // Include the dynamically constructed image URL
     ];
 
     wp_send_json_success($response); // Send JSON success response
     wp_die(); // Properly end the AJAX request
 }
+
+
 
 // Add the action hook for AJAX requests
 add_action('wp_ajax_get_story_step', 'get_story_step');

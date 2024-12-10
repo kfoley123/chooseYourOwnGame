@@ -14,6 +14,8 @@ async function loadGameStep(stepNumber = 0) {
 
         if (result.success) {
             const data = result.data;
+            console.log(result.data);
+
 
             // Display the game text
             document.getElementById('game-content').innerHTML = `<p>${data.text}</p>`;
@@ -22,6 +24,13 @@ async function loadGameStep(stepNumber = 0) {
             if (data.is_game_over) {
                 displayDeathScreen();  // Show the death screen if the step is a game-over
                 
+            }
+            if (data.image) {
+                console.log(data.image);
+                document.querySelector('#story-image').src = data.image;
+                document.querySelector('#story-image').style.display = 'block';
+            } else {
+                document.querySelector('#story-image').style.display = 'none';
             }
         } else {
             console.error('Failed to load game step:', result.message);
@@ -110,7 +119,7 @@ function displayDeathScreen() {
 
     const deathScreen = `
     <div style="text-align: center;">
-    <img src="./wp-content/plugins/retrogame/imgs/youDied.jpg" alt="Game Over Image" style="width: 400px; margin-bottom: 10px;">
+    <img src="./wp-content/plugins/retrogame/images/youDied.jpg" alt="Game Over Image" style="width: 400px; margin-bottom: 10px;">
         
     <pre>
     ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███        
