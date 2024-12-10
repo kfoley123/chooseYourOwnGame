@@ -25,6 +25,9 @@ async function loadGameStep(stepNumber = 0) {
                 displayDeathScreen();  // Show the death screen if the step is a game-over
                 
             }
+            if(data.is_win_scenario){
+                displayWinScreen();
+            }
             if (data.image) {
                 console.log(data.image);
                 document.querySelector('#story-image').src = data.image;
@@ -140,7 +143,6 @@ function displayDeathScreen() {
 
     // Clear previous content from game-content before displaying "Game Over"
     document.getElementById('game-content').innerHTML = '';
-
    
 
     const deathScreen = `
@@ -174,7 +176,18 @@ function displayDeathScreen() {
        // Delay resetting the game by 3 seconds (3000 milliseconds)
        setTimeout(resetGame, 3000);
    }
-   
+
+
+   function displayWinScreen() {
+
+    // Hide input and button during "You WIN" screen
+    document.getElementById('user-input').style.display = 'none';
+    document.getElementById('submit-action').style.display = 'none';
+
+    // Delay resetting the game by 6 seconds (3000 milliseconds)
+    setTimeout(resetGame, 6000);
+
+   }
 
 // Initial game setup
 document.addEventListener('DOMContentLoaded', () => {

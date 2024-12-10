@@ -22,6 +22,7 @@ function get_story_step() {
     $response = [
         'text' => $step['text'],
         'is_game_over' => !empty($step['is_game_over']) && $step['is_game_over'] == 1,
+        'is_win_scenario' => !empty($step['is_win_scenario']) && $step['is_win_scenario'] == 1,
         'options' => json_decode($step['options'], true), // Decode the JSON options
         'image' => $image_path // Include the dynamically constructed image URL
     ];
